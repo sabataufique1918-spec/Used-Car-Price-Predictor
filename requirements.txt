@@ -1,0 +1,19 @@
+# Pinned to the versions this project was built and tested against on
+# Python 3.14. Verified working together: all 4 scripts run, 60+ tests pass,
+# and the Streamlit app serves.
+#
+# Streamlit Community Cloud ignores runtime.txt and .python-version - the
+# Python version is chosen in the deploy dialog's "Advanced settings". Pick
+# 3.12 or 3.13 there for the widest wheel availability; this set also works on
+# 3.14 locally.
+
+pandas==3.0.6
+numpy==2.5.2
+scikit-learn==1.9.1
+streamlit==1.65.0
+plotly==7.1.0
+joblib==1.6.0
+
+# Testing only - harmless on the deployed app, and keeps the hosted
+# environment identical to the one the tests passed in.
+pytest==9.0.1

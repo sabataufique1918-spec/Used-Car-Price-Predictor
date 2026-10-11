@@ -1,0 +1,50 @@
+# ---- Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# ---- Virtual environments
+.venv/
+venv/
+env/
+
+# ---- Testing and tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ---- Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Streamlit local secrets. Never commit credentials.
+.streamlit/secrets.toml
+
+# ---- Jupyter
+.ipynb_checkpoints/
+
+# ---- Data and artefacts
+#
+# data/raw/ is COMMITTED on purpose. The source dataset is Open Database
+# License (ODbL), which permits redistribution with attribution, and the file
+# is ~1 MB. Committing it makes the project reproducible and lets Streamlit
+# Community Cloud rebuild the model without Kaggle credentials.
+#
+# Derived files are regenerable, so they stay out of git:
+data/processed/
+
+# models/ IS committed (see README): Streamlit Community Cloud installs
+# requirements and runs app.py, but does not run the training script, so the
+# deployed app needs the artefacts present in the repository.
+# If you would rather not commit a ~31 MB model, uncomment these two lines and
+# train on the host instead:
+# models/*.joblib
+# models/*.json

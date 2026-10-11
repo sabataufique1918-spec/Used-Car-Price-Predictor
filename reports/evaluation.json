@@ -1,0 +1,182 @@
+{
+  "observation_year": 2020,
+  "dataset": {
+    "source": "nehalbirla/vehicle-dataset-from-cardekho",
+    "file": "Car details v3.csv",
+    "licence": "Open Database License (ODbL) v1.0",
+    "clean_rows": 6924,
+    "train_rows": 5540,
+    "test_rows": 1384,
+    "split": "GroupShuffleSplit on name+year+km_driven"
+  },
+  "selected_model": "extra_trees",
+  "best_params": {
+    "max_features": 1.0,
+    "min_samples_leaf": 2,
+    "n_estimators": 300
+  },
+  "cv_comparison": {
+    "baseline_median": {
+      "mae_inr": 272795.73501805053,
+      "rmse_inr": 522546.8154625048,
+      "r2": -0.04693087682676711,
+      "median_abs_pct_error": 42.857142857142854,
+      "median_error_inr": 0.0,
+      "n": 5540,
+      "fit_seconds": 0.3
+    },
+    "ridge": {
+      "mae_inr": 80131.89075846873,
+      "rmse_inr": 164282.94083445455,
+      "r2": 0.8965209257153175,
+      "median_abs_pct_error": 12.292363321633497,
+      "median_error_inr": -912.9711388378491,
+      "n": 5540,
+      "fit_seconds": 0.3
+    },
+    "random_forest": {
+      "mae_inr": 76869.18792539631,
+      "rmse_inr": 171528.6199966977,
+      "r2": 0.8871917700292851,
+      "median_abs_pct_error": 11.95165637348509,
+      "median_error_inr": -767.3687514978519,
+      "n": 5540,
+      "fit_seconds": 4.6
+    },
+    "extra_trees": {
+      "mae_inr": 75518.04655429567,
+      "rmse_inr": 167329.65381960644,
+      "r2": 0.8926471884814431,
+      "median_abs_pct_error": 12.004502154415473,
+      "median_error_inr": -999.022732011199,
+      "n": 5540,
+      "fit_seconds": 6.2
+    }
+  },
+  "test_metrics": {
+    "mae_inr": 78092.42550720727,
+    "rmse_inr": 148799.3323094796,
+    "r2": 0.9279411892904741,
+    "median_abs_pct_error": 11.965748875570705,
+    "median_error_inr": -2893.092961903065,
+    "n": 1384
+  },
+  "baseline_test_metrics": {
+    "mae_inr": 298392.00072254334,
+    "rmse_inr": 570982.0431841689,
+    "r2": -0.061035771425102414,
+    "median_abs_pct_error": 42.857142857142854,
+    "median_error_inr": -6999.5,
+    "n": 1384
+  },
+  "mae_improvement_over_baseline_pct": 73.82891454257826,
+  "error_by_price_band": [
+    {
+      "price_band": "Under 2 lakh",
+      "n": 240,
+      "share_of_test_pct": 17.3,
+      "mae_inr": 32299.362817794816,
+      "rmse_inr": 42613.81009589706,
+      "median_abs_pct_error": 21.617113372381567,
+      "mean_bias_inr": 16438.81856228741
+    },
+    {
+      "price_band": "2-4 lakh",
+      "n": 415,
+      "share_of_test_pct": 30.0,
+      "mae_inr": 42467.17306181927,
+      "rmse_inr": 56536.239801715,
+      "median_abs_pct_error": 11.232076529610787,
+      "mean_bias_inr": 925.3204859174443
+    },
+    {
+      "price_band": "4-7 lakh",
+      "n": 433,
+      "share_of_test_pct": 31.3,
+      "mae_inr": 66448.04825624263,
+      "rmse_inr": 97692.3387817391,
+      "median_abs_pct_error": 9.950651173639821,
+      "mean_bias_inr": -1307.6129110869085
+    },
+    {
+      "price_band": "7-12 lakh",
+      "n": 211,
+      "share_of_test_pct": 15.2,
+      "mae_inr": 117779.14111841594,
+      "rmse_inr": 162315.9298220359,
+      "median_abs_pct_error": 10.639603340274281,
+      "mean_bias_inr": -54303.19179711283
+    },
+    {
+      "price_band": "Above 12 lakh",
+      "n": 85,
+      "share_of_test_pct": 6.1,
+      "mae_inr": 342126.933342474,
+      "rmse_inr": 475142.12954750477,
+      "median_abs_pct_error": 14.083566498433095,
+      "mean_bias_inr": -188378.62168480182
+    }
+  ],
+  "permutation_importance": [
+    {
+      "feature": "vehicle_age",
+      "mae_increase_inr": 155403.14976935237,
+      "std": 6807.829873826344
+    },
+    {
+      "feature": "max_power_bhp",
+      "mae_increase_inr": 94185.5290860845,
+      "std": 2222.43190895103
+    },
+    {
+      "feature": "engine_cc",
+      "mae_increase_inr": 43580.7100190068,
+      "std": 2148.302226275609
+    },
+    {
+      "feature": "model_family",
+      "mae_increase_inr": 27556.179318575887,
+      "std": 1263.1264273270106
+    },
+    {
+      "feature": "transmission",
+      "mae_increase_inr": 27353.924399198742,
+      "std": 1880.0451886981227
+    },
+    {
+      "feature": "fuel",
+      "mae_increase_inr": 25335.173334638752,
+      "std": 1855.4472947626518
+    },
+    {
+      "feature": "brand",
+      "mae_increase_inr": 21208.717159530068,
+      "std": 1186.8803903036096
+    },
+    {
+      "feature": "owner",
+      "mae_increase_inr": 7338.254166479304,
+      "std": 2281.066146298673
+    },
+    {
+      "feature": "km_driven",
+      "mae_increase_inr": 7258.057315344931,
+      "std": 1007.9682858707521
+    },
+    {
+      "feature": "seats",
+      "mae_increase_inr": 1859.9779802919888,
+      "std": 141.88046833402458
+    },
+    {
+      "feature": "seller_type",
+      "mae_increase_inr": 993.0688576900691,
+      "std": 197.40981684835037
+    },
+    {
+      "feature": "mileage_kmpl",
+      "mae_increase_inr": 116.14381396256503,
+      "std": 233.71195944772882
+    }
+  ]
+}
