@@ -368,8 +368,10 @@ The app smoke tests use Streamlit's own `AppTest` harness and run the real
 was wrapped in `st.form`, which suppresses reruns and would have left the
 dependent Model dropdown **permanently empty** for every user.
 
-Verified manually in a headless browser as well: 0 console errors, a 2015
-Maruti Swift returning ₹5,36,348 with the depreciation chart rendering.
+Verified manually in a headless browser as well: all four pages render with 0
+console errors and 0 exceptions, the brand → model dependency populates, and a
+2015 Maruti Swift (50,000 km, petrol, manual, first owner) returns ₹4,75,372
+with the depreciation chart rendering.
 
 ---
 
@@ -377,21 +379,31 @@ Maruti Swift returning ₹5,36,348 with the depreciation chart rendering.
 
 ### Streamlit Community Cloud
 
+Steps verified against the Streamlit deployment docs in October 2026:
+
 1. Push this repository to GitHub (public, or private with Streamlit granted
    access).
 2. Go to <https://share.streamlit.io> and sign in with GitHub.
-3. **Create app → Deploy a public app from GitHub**, then set:
+3. Click **Create app** (upper right).
+4. At *"Do you already have an app?"*, click **"Yup, I have an app."**
+5. Fill in:
    - **Repository:** `<your-username>/used-car-price-predictor`
    - **Branch:** `main`
    - **Main file path:** `app.py`
-   - **Advanced settings → Python version: 3.12** *(see note)*
-4. Deploy. The first build takes a few minutes while wheels install.
+   - *(optional)* **App URL:** a subdomain of your choice
+6. Open **Advanced settings** and set **Python version → 3.12**. Click **Save**.
+7. Deploy. The first build takes a few minutes while wheels install.
 
-**Python version matters.** Community Cloud ignores `runtime.txt` and
-`.python-version`; the only place to set it is the Advanced settings dialog.
-The platform has been defaulting to newer releases than its docs state, and
-there are open reports of 3.14 build failures with some package combinations.
-**Pick 3.12** — every pin in `requirements.txt` has wheels there.
+**Set the Python version explicitly.** Community Cloud's documented default is
+3.12, and the Advanced settings dropdown is the only supported way to choose —
+`runtime.txt` and `.python-version` are not read. Community reports describe
+the platform defaulting to newer releases than the docs state, including build
+failures on 3.14 with some package combinations. **Pick 3.12**: every pin in
+`requirements.txt` has wheels there.
+
+**Resource headroom.** Community Cloud allows up to ~2.7 GB RAM per app. This
+app loads a 30.7 MB artefact plus a 6,924-row dataframe, so it sits far inside
+that — but note these limits can change without notice.
 
 **Model artefacts must be in the repository.** Community Cloud installs
 `requirements.txt` and runs `app.py`; it does **not** run the training script.

@@ -36,8 +36,23 @@ def get_model():
 
 @st.cache_data(show_spinner="Loading data...")
 def get_clean_data() -> pd.DataFrame:
-    """Load the prepared dataset for the Data Explorer page."""
-    return data_prep.load_clean()
+    """Load the prepared dataset, rebuilding it in memory if necessary.
+
+    ``data/processed/`` is gitignored (it is derived, not source), but the raw
+    CSV is committed. On a fresh clone - and on Streamlit Community Cloud,
+    which installs requirements and runs the app but never runs the training
+    scripts - the processed file is therefore absent and the Data Explorer
+    would crash.
+
+    Cleaning is deterministic and takes under a second, so the fallback
+    reproduces it from the raw file instead. Same function the prepare script
+    calls, so the result is identical.
+    """
+    try:
+        return data_prep.load_clean()
+    except FileNotFoundError:
+        clean_df, _ = data_prep.clean(data_prep.load_raw())
+        return clean_df
 
 
 @st.cache_data(show_spinner=False)
@@ -55,11 +70,20 @@ def get_evaluation_report() -> dict | None:
 
 @st.cache_data(show_spinner=False)
 def get_exclusion_log() -> dict | None:
-    """Load the data-cleaning exclusion log, or None if absent."""
+    """Load the cleaning exclusion log, recomputing it if the file is absent.
+
+    Same reasoning as :func:`get_clean_data`: the log is derived and therefore
+    gitignored, but the Data Explorer's provenance panel should still work on
+    a fresh clone or a cloud deployment.
+    """
     path = Path(config.EXCLUSION_LOG_PATH)
-    if not path.exists():
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
+    try:
+        _, log = data_prep.clean(data_prep.load_raw())
+        return log.to_dict()
+    except FileNotFoundError:
         return None
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def artefacts_available() -> bool:

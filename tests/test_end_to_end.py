@@ -183,6 +183,36 @@ class TestRealArtefacts:
         dataset = report["dataset"]
         assert dataset["train_rows"] + dataset["test_rows"] == dataset["clean_rows"]
 
+    def test_clean_data_loads_without_the_processed_file(self, monkeypatch, tmp_path):
+        """The app must work on a fresh clone, where data/processed/ is absent.
+
+        Regression test: data/processed/ is gitignored, so on a fresh clone -
+        and on Streamlit Community Cloud, which never runs the training
+        scripts - the Data Explorer used to crash with FileNotFoundError. The
+        loader now rebuilds the table from the committed raw CSV.
+        """
+        monkeypatch.setattr(config, "CLEAN_CSV_PATH", tmp_path / "absent.csv")
+        app_support.get_clean_data.clear()
+        try:
+            frame = app_support.get_clean_data()
+            assert len(frame) > 0
+            for feature in config.FEATURES:
+                assert feature in frame.columns
+        finally:
+            app_support.get_clean_data.clear()
+
+    def test_exclusion_log_available_without_the_processed_file(
+        self, monkeypatch, tmp_path
+    ):
+        monkeypatch.setattr(config, "EXCLUSION_LOG_PATH", tmp_path / "absent.json")
+        app_support.get_exclusion_log.clear()
+        try:
+            log = app_support.get_exclusion_log()
+            assert log is not None
+            assert log["rows_in"] > log["rows_out"] > 0
+        finally:
+            app_support.get_exclusion_log.clear()
+
     def test_round_trip_through_disk_is_stable(self, tmp_path):
         """Save/reload of the real artefact must not change predictions."""
         pipeline, schema = model_io.load_model()
